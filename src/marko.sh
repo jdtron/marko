@@ -106,7 +106,7 @@ del_bookmark() {
     local backup_file=
 
     [ -z "$path" ] && path="$PWD"
-    path="$(readlink -f "$path")"
+    path="$(abs_path "$path")"
     path="$(normalize_path "$path")"
 
     ! has_bookmark "$path" && echo "Not a bookmark: $path" >&2 && exit 1
