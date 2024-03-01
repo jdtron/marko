@@ -85,7 +85,7 @@ add_bookmark_interactive() {
     local start="$1"
     local path=
 
-    path="$(browse "${1:-$PWD}" 'Add bookmark')"}
+    path="$(browse "${1:-$PWD}" 'Add bookmark')"
     [ -z "$path" ] && return 0
 
     add_bookmark "$path"
