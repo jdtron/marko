@@ -82,9 +82,10 @@ add_bookmark() {
 }
 
 add_bookmark_interactive() {
+    local start="$1"
     local path=
 
-    path="$(browse "$PWD" 'Add bookmark')"
+    path="$(browse "${1:-$PWD}" 'Add bookmark')"}
     [ -z "$path" ] && return 0
 
     add_bookmark "$path"
@@ -239,6 +240,6 @@ done
 
 list_bookmarks | $FZF_CMD \
     --header 'Add: alt-a | Del: alt-d' \
-    --bind "alt-a:execute($BIN_NAME -A ${PWD})+reload($BIN_NAME -l)" \
+    --bind "alt-a:execute($BIN_NAME -a "$PWD")+reload($BIN_NAME -l)" \
     --bind "alt-d:execute($BIN_NAME -D {})+reload($BIN_NAME -l)" \
     | post_process
