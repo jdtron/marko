@@ -166,7 +166,7 @@ get_editor() {
 eval_selection() {
     local path="$1"
 
-    path="$(normalize_path "$path")"
+    path="$(abs_path "$path")"
     [ -d "$path" ] && echo "cd '$path'"
     [ -f "$path" ] && echo "${EDITOR:-$(get_editor)} '$path'"
 
