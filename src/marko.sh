@@ -7,6 +7,7 @@ FZF_CMD="fzf --reverse --border rounded"
 
 eval_mode=0
 confirmation_enabled=1
+fzf_args=''
 
 check_deps() {
     for d in "${DEPENDENCIES[@]}"; do
@@ -33,6 +34,7 @@ usage() {
     echo '  -a          Add bookmark'
     echo '  -d          Delete bookmark'
     echo '  -E          Evaluation mode (see below)'
+    echo '  -t          Open in tmux popup'
     echo
     echo 'EVALUATION MODE'
     echo "  When enabled, $BIN_NAME outputs instructions to be evaluated"
@@ -221,7 +223,7 @@ browse() {
 check_deps || exit 1
 ensure_state
 
-while getopts 'haA:dD:lE' opt 2>/dev/null; do
+while getopts 'haA:dD:lEt' opt 2>/dev/null; do
     case "$opt" in
         a) add_bookmark_interactive; exit $? ;;
         A) add_bookmark "$OPTARG"; exit $? ;;
@@ -230,6 +232,7 @@ while getopts 'haA:dD:lE' opt 2>/dev/null; do
         l) list_bookmarks; exit $? ;;
         E) eval_mode=1 ;;
         h) usage; exit 0 ;;
+        t) fzf_args="$fzf_args --tmux" ;;
         *)
             echo "Invalid option: $(eval echo \$"$OPTERR")"
             echo
@@ -242,4 +245,5 @@ list_bookmarks | $FZF_CMD \
     --header 'Add: alt-a | Del: alt-d' \
     --bind "alt-a:execute($BIN_NAME -a "$PWD")+reload($BIN_NAME -l)" \
     --bind "alt-d:execute($BIN_NAME -D {})+reload($BIN_NAME -l)" \
+    $fzf_args \
     | post_process
