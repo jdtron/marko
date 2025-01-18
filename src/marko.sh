@@ -8,6 +8,7 @@ FZF_CMD="fzf --reverse --border rounded"
 eval_mode=0
 confirmation_enabled=1
 fzf_args=''
+no_browse=false
 
 check_deps() {
     for d in "${DEPENDENCIES[@]}"; do
@@ -35,6 +36,7 @@ usage() {
     echo '  -d          Delete bookmark'
     echo '  -E          Evaluation mode (see below)'
     echo '  -t          Open in tmux popup'
+    echo '  -n          Disable browsing when selecting a directory'
     echo
     echo 'EVALUATION MODE'
     echo "  When enabled, $BIN_NAME outputs instructions to be evaluated"
@@ -182,6 +184,11 @@ post_process() {
     input="$(cat /dev/stdin)"
     [ -z "$input" ] && return 0
 
+    local input_path="$( abs_path "$input" )"
+    if [ $no_browse = false ] && [ -d "$input_path" ]; then
+        input="$( browse "$input_path" )"
+    fi
+
     [ "$eval_mode" -eq 1 ] \
         && eval_selection "$input" && return 0 \
         || echo "$input"
@@ -223,7 +230,7 @@ browse() {
 check_deps || exit 1
 ensure_state
 
-while getopts 'haA:dD:lEt' opt 2>/dev/null; do
+while getopts 'haA:dD:lEtn' opt 2>/dev/null; do
     case "$opt" in
         a) add_bookmark_interactive; exit $? ;;
         A) add_bookmark "$OPTARG"; exit $? ;;
@@ -233,6 +240,7 @@ while getopts 'haA:dD:lEt' opt 2>/dev/null; do
         E) eval_mode=1 ;;
         h) usage; exit 0 ;;
         t) fzf_args="$fzf_args --tmux" ;;
+        n) no_browse=true ;;
         *)
             echo "Invalid option: $(eval echo \$"$OPTERR")"
             echo
