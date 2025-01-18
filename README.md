@@ -12,3 +12,12 @@ For your shell integration, there a are targets for your shell, as well.
 Currently supported shells are:
 - zsh
 - bash
+
+## Integrate with tmux
+To install marko with [tpm](https://github.com/tmux-plugins/tpm), simply add this to your tmux configuration:
+```
+set -g @plugin 'jdtron/marko'
+set -g @marko-key 'M'
+```
+
+If you already have a running session, press `prefix + I` to install the plugin.
