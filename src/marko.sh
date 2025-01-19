@@ -7,7 +7,6 @@ FZF_CMD="fzf --reverse --border rounded"
 
 eval_mode=0
 confirmation_enabled=1
-fzf_args=''
 no_browse=false
 
 check_deps() {
@@ -239,7 +238,7 @@ while getopts 'haA:dD:lEtn' opt 2>/dev/null; do
         l) list_bookmarks; exit $? ;;
         E) eval_mode=1 ;;
         h) usage; exit 0 ;;
-        t) fzf_args="$fzf_args --tmux" ;;
+        t) FZF_CMD="$FZF_CMD --tmux" ;;
         n) no_browse=true ;;
         *)
             echo "Invalid option: $(eval echo \$"$OPTERR")"
@@ -253,5 +252,4 @@ list_bookmarks | $FZF_CMD \
     --header 'Add: alt-a | Del: alt-d' \
     --bind "alt-a:execute($BIN_NAME -a "$PWD")+reload($BIN_NAME -l)" \
     --bind "alt-d:execute($BIN_NAME -D {})+reload($BIN_NAME -l)" \
-    $fzf_args \
     | post_process
