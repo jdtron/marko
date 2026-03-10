@@ -28,6 +28,9 @@ From here, copy the executable to anywhere in your PATH (recommended `~/.local/b
 Copy the shell wrapper `src/marko.sh` (recommended to `~/.local/lib/marko.sh`).  
 Make sure to source this file in your shell rc.
 
-## Roadmap
-- [X] tmux support
-- [ ] tmux plugin for tpm
+## Tmux Integration
+
+To use Marko with tmux, copy this to your tmux config:
+```
+bind-key M run-shell 'marko-tui -t'
+```
