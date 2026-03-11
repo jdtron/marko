@@ -15,11 +15,11 @@ type HelpProps =
 const Inline = ({ keys }: Props) => {
     return <Box>
         {Object.entries(keys).map(
-            ([keys, text], idx, all) => <>
+            ([keys, text], idx, all) => <Box key={`help-${keys}`}>
                 <Text color="gray" bold={true}>{keys} </Text>
                 <Text color="gray">{text}</Text>
                 {idx < all.length - 1 && <Text color="gray"> · </Text>}
-            </>
+            </Box>
         )}
     </Box>
 }
